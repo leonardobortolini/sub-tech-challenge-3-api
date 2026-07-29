@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: revenda-api
+  namespace: revenda
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: revenda-api
+
+  template:
+
+    metadata:
+      labels:
+        app: revenda-api
+
+    spec:
+
+      initContainers:
+
+        - name: aguarda-postgres
+
+          image: busybox:1.36
+
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z postgres-service 5432; do
+                echo "Aguardando PostgreSQL..."
+                sleep 2
+              done
+              echo "PostgreSQL disponível"
+
+
+      containers:
+
+        - name: revenda-api
+
+          image: revenda-api:latest
+
+          imagePullPolicy: Never
+
+          ports:
+
+            - containerPort: 8000
+
+          env:
+
+            - name: DATABASE_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: revenda-config
+                  key: DATABASE_URL

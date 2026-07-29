@@ -1,0 +1,46 @@
+services:
+
+  # Banco de dados utilizado pela API
+  postgres:
+    image: postgres:15
+
+    container_name: postgres-revenda
+
+    environment:
+      POSTGRES_DB: revenda
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d revenda"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  # Aplicacao
+  api:
+    build: .
+
+    container_name: revenda-api
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      DATABASE_URL: postgresql://admin:admin@postgres:5432/revenda
+
+    ports:
+      - "8000:8000"
+
+
+volumes:
+
+  postgres_data:
