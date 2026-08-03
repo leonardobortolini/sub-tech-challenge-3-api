@@ -4,6 +4,9 @@ services:
   postgres:
     image: postgres:15
 
+    networks:
+      - revenda-network
+
     container_name: postgres-revenda
 
     environment:
@@ -30,6 +33,9 @@ services:
 
     container_name: revenda-api
 
+    networks:
+      - revenda-network
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,3 +50,8 @@ services:
 volumes:
 
   postgres_data:
+
+networks:
+  revenda-network:
+    external: true
+    name: revenda-network

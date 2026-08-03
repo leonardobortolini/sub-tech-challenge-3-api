@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 
+from src.infraestrutura.autenticacao.autenticacao import (
+    obter_chaves_publicas
+)
+
 from src.apresentacao.controllers import (
     veiculos,
     pagamentos
@@ -34,6 +38,11 @@ app.include_router(
 app.include_router(
     pagamentos.router
 )
+
+@app.get("/teste-keycloak")
+def teste():
+
+    return obter_chaves_publicas()
 
 # Status da aplicacao
 @app.get("/health")
