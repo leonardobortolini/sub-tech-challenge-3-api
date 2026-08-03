@@ -5,7 +5,9 @@ class Configuracoes(BaseSettings):
 
     DATABASE_URL: str
 
-    KEYCLOAK_SERVER_URL: str
+    KEYCLOAK_INTERNAL_URL: str
+
+    KEYCLOAK_ISSUER: str
 
     KEYCLOAK_REALM: str
 

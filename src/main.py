@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from src.infraestrutura.autenticacao.autenticacao import (
-    obter_chaves_publicas
+    obter_chaves_publicas, validar_token
 )
 
 from src.apresentacao.controllers import (
@@ -15,6 +17,9 @@ from src.infraestrutura.database.conexao import (
 )
 
 from src.infraestrutura.database import modelos
+
+
+security = HTTPBearer()
 
 
 # Cria as tabelas no banco
