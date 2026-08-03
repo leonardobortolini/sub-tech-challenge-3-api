@@ -1,8 +1,9 @@
 from src.config import configuracoes
 
+# COnfiguracoes utilizadas na autenticacao com o keycloak
 
-KEYCLOAK_SERVER_URL = (
-    configuracoes.KEYCLOAK_SERVER_URL
+KEYCLOAK_INTERNAL_URL = (
+    configuracoes.KEYCLOAK_INTERNAL_URL
 )
 
 KEYCLOAK_REALM = (
@@ -15,12 +16,9 @@ KEYCLOAK_CLIENT_ID = (
 
 
 JWKS_URL = (
-    f"{KEYCLOAK_SERVER_URL}"
+    f"{KEYCLOAK_INTERNAL_URL}"
     f"/realms/{KEYCLOAK_REALM}"
     f"/protocol/openid-connect/certs"
 )
 
-ISSUER = (
-    f"{KEYCLOAK_SERVER_URL}"
-    f"/realms/{KEYCLOAK_REALM}"
-)
+ISSUER = configuracoes.KEYCLOAK_ISSUER
