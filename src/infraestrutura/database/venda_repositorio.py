@@ -36,6 +36,7 @@ class VendaRepositorioPostgres:
 
         # Atualiza dados
         modelo.veiculo_id = venda.veiculo_id
+        modelo.keycloak_user_id = venda.keycloak_user_id
         modelo.cpf_comprador = venda.cpf_comprador
         modelo.codigo_pagamento = venda.codigo_pagamento
         modelo.data_venda = venda.data_venda
@@ -71,6 +72,7 @@ class VendaRepositorioPostgres:
         return Venda(
             id=modelo.id,
             veiculo_id=modelo.veiculo_id,
+            keycloak_user_id=modelo.keycloak_user_id,
             cpf_comprador=modelo.cpf_comprador,
             codigo_pagamento=modelo.codigo_pagamento,
             data_venda=modelo.data_venda,
@@ -98,6 +100,7 @@ class VendaRepositorioPostgres:
             Venda(
                 id=venda.id,
                 veiculo_id=venda.veiculo_id,
+                keycloak_user_id=venda.keycloak_user_id,
                 cpf_comprador=venda.cpf_comprador,
                 codigo_pagamento=venda.codigo_pagamento,
                 data_venda=venda.data_venda,

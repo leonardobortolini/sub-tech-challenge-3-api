@@ -21,6 +21,7 @@ class VenderVeiculo:
     def executar(
         self,
         veiculo_id,
+        keycloak_user_id,
         cpf_comprador,
         data_venda
     ):
@@ -51,6 +52,7 @@ class VenderVeiculo:
         venda = Venda(
             id=uuid4(),
             veiculo_id=veiculo.id,
+            keycloak_user_id=keycloak_user_id,
             cpf_comprador=str(
                 cpf_validado
             ),
