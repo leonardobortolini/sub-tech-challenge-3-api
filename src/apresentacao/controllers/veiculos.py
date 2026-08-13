@@ -169,6 +169,11 @@ def listar_vendidos(
     sessao: Session = Depends(obter_sessao)
 ):
 
+    exigir_role(
+        usuario,
+        "admin"
+    )
+
     repositorio = VeiculoRepositorioPostgres(
         sessao
     )
@@ -193,7 +198,7 @@ def vender(
 
     exigir_role(
         usuario,
-        "admin"
+        "cliente"
     )
 
 
@@ -217,6 +222,7 @@ def vender(
 
         return caso_de_uso.executar(
             veiculo_id=id,
+            keycloak_user_id=usuario["sub"],
             cpf_comprador=request.cpf_comprador,
             data_venda=request.data_venda
         )
