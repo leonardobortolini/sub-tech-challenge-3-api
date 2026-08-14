@@ -65,7 +65,7 @@ spec:
 
             - name: KEYCLOAK_ISSUER
               value: http://keycloak-service:8080/realms/revenda
-            
+
             - name: KEYCLOAK_EXTERNAL_ISSUER
               value: http://localhost:18081/realms/revenda
 
