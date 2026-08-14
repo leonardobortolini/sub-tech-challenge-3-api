@@ -26,13 +26,11 @@ jobs:
             --dry-run=client \
             -o yaml | kubectl apply -f -
 
-      - name: Configurar Docker do Minikube
+      - name: Build da imagem no Minikube
         run: |
           eval $(minikube docker-env)
-
-      - name: Build da imagem
-        run: |
           docker build -t revenda-api:latest .
+          docker images revenda-api
 
       - name: Aplicar manifests
         run: |
