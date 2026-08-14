@@ -21,4 +21,7 @@ JWKS_URL = (
     f"/protocol/openid-connect/certs"
 )
 
-ISSUER = configuracoes.KEYCLOAK_ISSUER
+ISSUERS_VALIDOS = [
+    configuracoes.KEYCLOAK_ISSUER,
+    configuracoes.KEYCLOAK_EXTERNAL_ISSUER,
+]
