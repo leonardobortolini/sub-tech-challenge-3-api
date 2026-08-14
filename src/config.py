@@ -9,6 +9,8 @@ class Configuracoes(BaseSettings):
 
     KEYCLOAK_ISSUER: str
 
+    KEYCLOAK_EXTERNAL_ISSUER: str
+
     KEYCLOAK_REALM: str
 
     KEYCLOAK_CLIENT_ID: str

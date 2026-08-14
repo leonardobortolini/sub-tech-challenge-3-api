@@ -4,7 +4,7 @@ from jose import jwt
 
 from src.infraestrutura.autenticacao.configuracao import (
     JWKS_URL,
-    ISSUER,
+    ISSUERS_VALIDOS,
     KEYCLOAK_CLIENT_ID
 )
 
@@ -49,10 +49,13 @@ def validar_token(token: str):
         token,
         chave,
         algorithms=["RS256"],
-        issuer=ISSUER,
         options={
-            "verify_aud": False
+            "verify_aud": False,
+            "verify_iss": False
         }
     )
+
+    if claims.get("iss") not in ISSUERS_VALIDOS:
+        raise Exception("Issuer inválido.")
 
     return claims
