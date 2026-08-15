@@ -329,10 +329,16 @@ POST /realms/revenda/protocol/openid-connect/token
 
 Utilize as credenciais de um dos usuários criados anteriormente.
 
-Exemplo:
+Exemplo no Docker:
 
 ```bash
 curl -X POST   http://localhost:8080/realms/revenda/protocol/openid-connect/token   -H "Content-Type: application/x-www-form-urlencoded"   -d "client_id=revenda-api"   -d "username=USUARIO"   -d "password=SENHA"   -d "grant_type=password"
+```
+
+Exemplo no Kubernetes:
+
+```bash
+curl -X POST   http://localhost:18081/realms/revenda/protocol/openid-connect/token   -H "Content-Type: application/x-www-form-urlencoded"   -d "client_id=revenda-api"   -d "username=USUARIO"   -d "password=SENHA"   -d "grant_type=password"
 ```
 
 A resposta conterá um `access_token`:
