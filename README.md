@@ -381,7 +381,7 @@ http://localhost:8000/docs
 
 # 6. Executar a API com Kubernetes
 
-Também é possível executar a aplicação utilizando Kubernetes através do Minikube.
+**Antes de subir a api com kubernetes, suba o keycloak conforme descrito no readme do repositório** [sub-tech-challenge-3-auth](https://github.com/leonardobortolini/sub-tech-challenge-3-auth)
 
 ## 6.1 Inicializar o Minikube
 
@@ -430,10 +430,9 @@ kubectl get svc -n revenda
 Para acessar a API através do Minikube:
 
 ```bash
-minikube service revenda-api-service -n revenda
+kubectl port-forward -n revenda service/revenda-api-service 18080:8000
 ```
-
-O Minikube disponibilizará uma URL para acesso à aplicação.
+A aplicação fica acessível no host em: http://localhost:18080
 
 A documentação Swagger estará disponível em:
 
