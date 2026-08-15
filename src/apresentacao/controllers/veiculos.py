@@ -51,6 +51,11 @@ from src.dominio.excecoes.excecoes import (
     VeiculoJaVendido
 )
 
+from src.infraestrutura.autenticacao.dependencias import (
+    obter_usuario_autenticado
+)
+
+from src.infraestrutura.autenticacao.autorizacao import exigir_role
 
 router = APIRouter(
     prefix="/veiculos",
@@ -62,8 +67,16 @@ router = APIRouter(
 @router.post("")
 def cadastrar(
     request: CriarVeiculoRequest,
+    usuario: dict = Depends(obter_usuario_autenticado),
     sessao: Session = Depends(obter_sessao)
 ):
+
+
+    exigir_role(
+        usuario,
+        "admin"
+    )
+
 
     repositorio = VeiculoRepositorioPostgres(
         sessao
@@ -92,8 +105,16 @@ def cadastrar(
 def editar(
     id: str,
     request: CriarVeiculoRequest,
+    usuario: dict = Depends(obter_usuario_autenticado),
     sessao: Session = Depends(obter_sessao)
 ):
+
+
+    exigir_role(
+        usuario,
+        "admin"
+    )
+
 
     repositorio = VeiculoRepositorioPostgres(
         sessao
@@ -121,6 +142,7 @@ def editar(
 # Endpoint listar veiculos disponiveis
 @router.get("/disponiveis")
 def listar_disponiveis(
+    usuario: dict = Depends(obter_usuario_autenticado),
     sessao: Session = Depends(obter_sessao)
 ):
 
@@ -143,8 +165,14 @@ def listar_disponiveis(
     response_model=list[VeiculoVendidoResponse]
 )
 def listar_vendidos(
+    usuario: dict = Depends(obter_usuario_autenticado),
     sessao: Session = Depends(obter_sessao)
 ):
+
+    exigir_role(
+        usuario,
+        "admin"
+    )
 
     repositorio = VeiculoRepositorioPostgres(
         sessao
@@ -164,8 +192,15 @@ def listar_vendidos(
 def vender(
     id: str,
     request: VendaRequest,
+    usuario: dict = Depends(obter_usuario_autenticado),
     sessao: Session = Depends(obter_sessao)
 ):
+
+    exigir_role(
+        usuario,
+        "cliente"
+    )
+
 
     try:
 
@@ -187,6 +222,7 @@ def vender(
 
         return caso_de_uso.executar(
             veiculo_id=id,
+            keycloak_user_id=usuario["sub"],
             cpf_comprador=request.cpf_comprador,
             data_venda=request.data_venda
         )

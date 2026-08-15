@@ -54,6 +54,8 @@ class VendaModelo(Base):
 
     cpf_comprador = Column(String)
 
+    keycloak_user_id = Column(String)
+
     codigo_pagamento = Column(String)
 
     data_venda = Column(DateTime)

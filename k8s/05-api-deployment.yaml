@@ -59,3 +59,18 @@ spec:
 
                   name: revenda-config
                   key: DATABASE_URL
+
+            - name: KEYCLOAK_INTERNAL_URL
+              value: http://keycloak-service:8080
+
+            - name: KEYCLOAK_ISSUER
+              value: http://keycloak-service:8080/realms/revenda
+
+            - name: KEYCLOAK_EXTERNAL_ISSUER
+              value: http://localhost:18081/realms/revenda
+
+            - name: KEYCLOAK_REALM
+              value: revenda
+
+            - name: KEYCLOAK_CLIENT_ID
+              value: revenda-api

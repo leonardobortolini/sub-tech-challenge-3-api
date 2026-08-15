@@ -12,6 +12,8 @@ class Venda:
 
     veiculo_id: UUID
 
+    keycloak_user_id: str
+
     cpf_comprador: str
 
     codigo_pagamento: str

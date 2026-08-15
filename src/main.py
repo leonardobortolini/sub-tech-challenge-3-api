@@ -1,4 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+from src.infraestrutura.autenticacao.autenticacao import (
+    obter_chaves_publicas, validar_token
+)
 
 from src.apresentacao.controllers import (
     veiculos,
@@ -11,6 +17,9 @@ from src.infraestrutura.database.conexao import (
 )
 
 from src.infraestrutura.database import modelos
+
+
+security = HTTPBearer()
 
 
 # Cria as tabelas no banco
@@ -34,6 +43,11 @@ app.include_router(
 app.include_router(
     pagamentos.router
 )
+
+@app.get("/teste-keycloak")
+def teste():
+
+    return obter_chaves_publicas()
 
 # Status da aplicacao
 @app.get("/health")

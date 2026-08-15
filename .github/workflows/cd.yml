@@ -1,0 +1,76 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+
+  deploy:
+
+    name: Deploy Kubernetes
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Iniciar Minikube
+        uses: medyagh/setup-minikube@latest
+
+      - name: Preparar namespace
+        run: |
+          kubectl create namespace revenda \
+            --dry-run=client \
+            -o yaml | kubectl apply -f -
+
+      - name: Build da imagem no Minikube
+        run: |
+          eval $(minikube docker-env)
+          docker build -t revenda-api:latest .
+          docker images revenda-api
+
+      - name: Aplicar manifests
+        run: |
+          kubectl apply -f k8s/
+
+      - name: Aguardar PostgreSQL
+        run: |
+          kubectl rollout status \
+            deployment/postgres \
+            -n revenda \
+            --timeout=180s
+
+      - name: Aguardar API
+        run: |
+          kubectl rollout status \
+            deployment/revenda-api \
+            -n revenda \
+            --timeout=180s
+
+      - name: Verificar pods
+        run: |
+          kubectl get pods -n revenda
+
+      - name: Verificar API
+        run: |
+          kubectl port-forward \
+            -n revenda \
+            service/revenda-api-service \
+            8000:8000 > /tmp/port-forward.log 2>&1 &
+
+          sleep 5
+
+          curl --fail http://localhost:8000/health
+
+      - name: Exibir logs em caso de erro
+        if: failure()
+        run: |
+          kubectl get pods -n revenda
+          kubectl describe pods -n revenda
+          kubectl logs -n revenda \
+            -l app=revenda-api \
+            --tail=100
